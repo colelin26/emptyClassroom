@@ -33,7 +33,7 @@
 .searchBar {
   border-radius: 0.2em;
   padding: 1em;
-  width: 90%;
+  width: 40%;
   height: 2.8em;
   margin: 0.2em 0;
   font-size: 0.5em;
@@ -114,7 +114,7 @@ button {
   box-sizing: border-box;
   width: 100%;
   display: flex;
-  color: green;
+  color: rgb(43, 164, 168);
   padding-left: 0.6em;
   padding-top: 0.3em;
   font-weight: bold;
@@ -122,6 +122,6 @@ button {
 }
 
 .favouriteContainer {
-  background-color: #F7FEFA;
+  background-color: rgb(22, 153, 170);
   width: 100%;
 }

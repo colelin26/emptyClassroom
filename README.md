@@ -1,6 +1,6 @@
-A React implementation for 2019 Spring intern web engineer challenge.
+# Empty ClassRoom
 
-Hosted link: https://www.colelin.com/shopify-2019-spring-intern-web-enginner-challenge/
+Find the empty classroom where you can study happily with your friends
 
 # Usage
 

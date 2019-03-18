@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import decode from "decode-html";
-import request from "superagent";
-import ReactHtmlParser from "react-html-parser";
+import buildings from "./BuildingsAvailability";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faStar } from "@fortawesome/free-solid-svg-icons";
 
@@ -14,48 +12,36 @@ class App extends Component {
       keyword: "",
       data: [],
       searchResult: [],
-      favourites: [],
-      jsonURL:
-        "https://secure.toronto.ca/cc_sr_v1/data/swm_waste_wizard_APR?limit=1000",
-      ReactHtmlParserOptions: {
-        decodeEntities: true,
-        transform: function(node, index) {
-          if (node.attribs && node.attribs.style !== undefined) {
-            node.attribs.style = undefined;
-          }
-          if (
-            node.type === "tag" &&
-            node.name === "p" &&
-            !node.children.length
-          ) {
-            return null;
-          }
-        }
-      }
+      favourites: []
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.handleBuilding = this.handleBuilding.bind(this);
+    this.handleRoom = this.handleRoom.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleAddFavourite = this.handleAddFavourite.bind(this);
     this.handleDeleteFavourite = this.handleDeleteFavourite.bind(this);
   }
 
   async componentDidMount() {
-    const res = await request.get(this.state.jsonURL);
-    this.setState({ data: res.body });
+    this.setState({ data: buildings });
   }
 
-  handleChange(event) {
-    this.setState({ keyword: event.target.value });
-    if (event.target.value === "") this.setState({ searchResult: [] });
+  handleBuilding(event) {
+    this.setState({ building: event.target.value });
+  }
+
+  handleRoom(event) {
+    this.setState({ room: event.target.value });
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    const { keyword } = this.state;
-    const result = this.state.data.filter(item => {
-      if (item.keywords.includes(keyword)) return true;
-      return false;
-    });
+    const { building, room } = this.state;
+    let result = [];
+    if (
+      this.state.data[building] !== undefined &&
+      this.state.data[building][room] !== undefined
+    )
+      result = this.state.data[building][room];
     this.setState({
       searchResult: result
     });
@@ -78,24 +64,26 @@ class App extends Component {
   }
 
   render() {
-    const {
-      keyword,
-      favourites,
-      searchResult,
-      ReactHtmlParserOptions
-    } = this.state;
+    const { building, room, favourites, searchResult } = this.state;
+    console.log(searchResult);
 
     return (
       <div className="App">
         <header className="appHeader">
-          <p>Toronto Waste Lookup</p>
+          <p>Empty Classroom</p>
         </header>
 
         <form onSubmit={this.handleSubmit} className="searchWrapper">
           <input
-            value={keyword}
-            onChange={this.handleChange}
-            placeholder="Keywords..."
+            value={building}
+            onChange={this.handleBuilding}
+            placeholder="building..."
+            className="searchBar"
+          />
+          <input
+            value={room}
+            onChange={this.handleRoom}
+            placeholder="room..."
             className="searchBar"
           />
           <button type="submit">
@@ -122,10 +110,15 @@ class App extends Component {
                     <FontAwesomeIcon icon={faStar} />
                   </div>
                 )}
-                {ReactHtmlParser(decode(item.title), ReactHtmlParserOptions)}
+                {item ? `${item.building} ${item.room}` : ``}
               </div>
               <div className="itemDescription">
-                {ReactHtmlParser(decode(item.body), ReactHtmlParserOptions)}
+                <div className="itemDescription">
+                  {`${item.subject} ${item.catalog_number} 
+                      weekdays: ${item.weekdays}
+                      start time: ${item.start_time}
+                      end time: ${item.end_time}`}
+                </div>
               </div>
             </div>
           ))}
@@ -146,13 +139,15 @@ class App extends Component {
                     >
                       <FontAwesomeIcon icon={faStar} />
                     </div>
-                    {ReactHtmlParser(
-                      decode(item.title),
-                      ReactHtmlParserOptions
-                    )}
+                    {item ? `${item.building} ${item.room}` : ``}
                   </div>
                   <div className="itemDescription">
-                    {ReactHtmlParser(decode(item.body), ReactHtmlParserOptions)}
+                    <div className="itemDescription">
+                      {`${item.subject} ${item.catalog_number} 
+                      weekdays: ${item.weekdays}
+                      start time: ${item.start_time}
+                      end time: ${item.start_time}`}
+                    </div>
                   </div>
                 </div>
               ))}
