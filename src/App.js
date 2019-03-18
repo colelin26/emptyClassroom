@@ -58,7 +58,7 @@ class App extends Component {
     if (this.state.favourites.includes(item))
       this.setState({
         favourites: this.state.favourites.filter(
-          favourite => favourite.id !== item.id
+          favourite => favourite !== item
         )
       });
   }
@@ -146,7 +146,7 @@ class App extends Component {
                       {`${item.subject} ${item.catalog_number} 
                       weekdays: ${item.weekdays}
                       start time: ${item.start_time}
-                      end time: ${item.start_time}`}
+                      end time: ${item.end_time}`}
                     </div>
                   </div>
                 </div>
