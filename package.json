@@ -2,7 +2,7 @@
   "name": "emptyClassroom",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://colelin26.github.io/shopify-2019-spring-intern-web-enginner-challenge/",
+  "homepage": "http://colelin26.github.io/emptyClassroom/",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.12",
     "@fortawesome/free-solid-svg-icons": "^5.6.3",
